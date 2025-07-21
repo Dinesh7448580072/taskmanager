@@ -1,0 +1,47 @@
+package com.example.taskmanager.util;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import java.io.IOException;
+
+@Component
+public class JwtAuthFilter extends GenericFilter {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String uri = httpRequest.getRequestURI();
+        System.out.println("URI"+uri);
+        String path = httpRequest.getServletPath();
+        System.out.println("Servlet Path: " + path);
+
+        // ✅ Skip all /auth routes (e.g., /auth/login, /auth/register)
+        if (path.startsWith("/auth/login")) {
+            System.out.println("Inside Skip /Auth/Login");
+            chain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = httpRequest.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            if (!jwtUtil.isTokenValid(token)) {
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
+                return;
+            }
+        } else {
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing JWT");
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+}
