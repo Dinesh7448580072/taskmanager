@@ -1,0 +1,39 @@
+package com.example.taskmanager.controller;
+
+import com.example.taskmanager.service.AuthService;
+import com.example.taskmanager.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/auth")
+public class UserController {
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+
+        String result = authService.validateUser(username, password);
+
+        if (result.equals("Login successful")) {
+            System.out.println("Inside Login Succesfull");
+            String token = jwtUtil.generateToken(username); // Generate token
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body(result);
+        }
+    }
+}
