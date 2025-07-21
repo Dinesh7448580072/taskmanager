@@ -1,0 +1,28 @@
+package com.example.taskmanager.service;
+
+import com.example.taskmanager.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public String validateUser(String username, String password){
+        boolean matchUsernameAndPassword = userRepository.findByUsernameAndPassword(username, password).isPresent();
+        boolean usernameExists = userRepository.findByUsername(username).isPresent();
+        boolean passwordExists = userRepository.findByPassword(password).isPresent();
+
+        if (matchUsernameAndPassword) {
+            return "Login successful";
+        } else if (usernameExists) {
+            return "Wrong password";
+        } else if (passwordExists) {
+            return "Wrong username";
+        } else {
+            return "Invalid username and password";
+        }
+    }
+}
