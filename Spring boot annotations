@@ -1,0 +1,29 @@
+Core & Configuration:
+@SpringBootApplication: Combines @Configuration, @EnableAutoConfiguration, and @ComponentScan. Used on the main application class.
+@Configuration: Indicates a class contains Spring bean definitions.
+@Bean: Marks a method that produces a bean to be managed by the Spring IoC container. 
+@ComponentScan: Configures component scanning to detect Spring components, configurations, and services.
+@Autowired: Automatically injects dependencies by type.
+@Value: Injects values from properties files or environment variables into fields or method parameters.
+Web & REST:
+@RestController: A convenience annotation combining @Controller and @ResponseBody. Used for building RESTful web services.
+@Controller: Marks a class as a Spring MVC controller.
+@ResponseBody: Indicates that the return value of a method should be bound to the HTTP response body. 
+@RequestMapping: Maps HTTP requests to handler methods. Can be used at class or method level.
+@GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping: Specific HTTP method mapping annotations.
+@PathVariable: Extracts a value from the URL path.
+@RequestParam: Extracts query parameters from the request.
+@RequestBody: Binds the HTTP request body to a method parameter.
+@ResponseStatus: Sets the HTTP status code for a response.
+Data & Persistence:
+@Repository: Marks a class as a data access object (DAO) or repository.
+@Transactional: Manages transactional behavior for methods or classes.
+Component Stereotypes:
+@Component: A generic stereotype for any Spring-managed component.
+@Service: Marks a class as a service component in the business layer.
+@Repository: Marks a class as a data access component.
+Other:
+@EnableAutoConfiguration: Enables Spring Boot's auto-configuration mechanism.
+@EnableScheduling: Enables support for scheduled tasks.
+@ExceptionHandler: Handles exceptions thrown by handler methods within a controller.
+@Data (Lombok): A Lombok annotation that bundles @ToString, @EqualsAndHashCode, @Getter, @Setter, and @RequiredArgsConstructor. 
