@@ -1,0 +1,11 @@
+ @PostMapping("/{taskId}/upload")
+    public ResponseEntity<String> uploadFile(
+            @PathVariable long taskId,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            String result = taskService.uploadTaskFile(taskId, file);
+            return ResponseEntity.ok(result);
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body("Upload failed: " + ex.getMessage());
+        }
+    }
