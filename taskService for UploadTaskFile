@@ -1,0 +1,12 @@
+public String uploadTaskFile(long taskId, MultipartFile file) throws IOException{
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found with id"));
+
+        String savedPath = fileStorageService.storeFile(file);
+
+        task.setFileName(file.getOriginalFilename());
+        task.setFilePath(savedPath);
+
+        taskRepository.save(task);
+
+        return "File successfully saved" + file.getOriginalFilename();
+    }
